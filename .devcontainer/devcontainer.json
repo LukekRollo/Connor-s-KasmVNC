@@ -1,0 +1,19 @@
+{
+  "name": "KasmVNC Desktop",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "forwardPorts": [6901],
+  "portsAttributes": {
+    "6901": {
+      "label": "KasmVNC Desktop",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postStartCommand": "bash /home/vscode/scripts/start-desktop.sh",
+  "remoteUser": "vscode",
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb"
+  }
+}

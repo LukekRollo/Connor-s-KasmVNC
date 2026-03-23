@@ -1,0 +1,101 @@
+# /etc/kasmvnc/kasmvnc.yaml — FULLY OPTIMIZED FOR GITHUB CODESPACES
+
+desktop:
+  resolution:
+    width: 1920
+    height: 1080
+  allow_resize: true
+  pixel_depth: 24
+
+network:
+  protocol: https
+  interface: 0.0.0.0
+  websocket_port: auto
+  use_ipv4: true
+  use_ipv6: true
+  udp:
+    # WebRTC UDP transit for lowest latency
+    # (may not work in Codespaces due to NAT — falls back to WebSocket)
+    public_ip: auto
+    port: auto
+    stun_server: auto
+  ssl:
+    pem_certificate: /etc/ssl/certs/ssl-cert-snakeoil.pem
+    pem_key: /etc/ssl/private/ssl-cert-snakeoil.key
+    require_ssl: true
+
+encoding:
+  # ===== KEY PERFORMANCE SETTINGS =====
+  max_frame_rate: 60
+  # Use WebP for static content (30% better compression than JPEG)
+  rect_encoding_mode:
+    min_quality: 7
+    max_quality: 9
+    consider_lossless_quality: 10
+    rectangle_compress_threads: 4  # Match your CPU cores
+  
+  # Video mode — auto-detects fullscreen video and optimizes
+  video_encoding_mode:
+    jpeg_quality: -1        # Auto quality
+    webp_quality: -1        # Auto quality
+    max_resolution:
+      width: 1920
+      height: 1080
+    enter_video_encoding_mode:
+      time_threshold: 5
+      area_fraction_threshold: 0.45
+
+  # Compare framebuffer — reduces CPU when screen is static
+  compare_framebuffer: auto
+  
+  # Zlib compression level (0-9, lower = faster, higher = smaller)
+  zrle_zlib_level: 1
+
+  # Prefer bandwidth efficiency
+  treat_lossless: 7
+
+# Dynamic quality — THE KEY FEATURE
+# When lots of motion: drops quality for speed
+# When motion stops: snaps back to high quality
+runtime_configuration:
+  allow_client_to_override_kasm_server_settings: true
+  allow_override_standard_vnc_server_settings: true
+  allow_override_list:
+    - pointer.enabled
+    - data_loss_prevention.clipboard.server_to_client.enabled
+    - data_loss_prevention.clipboard.client_to_server.enabled
+
+# Session settings
+user_session:
+  new_session_disconnects_existing_exclusive_session: false
+  concurrent_connections_prompt: false
+  idle_timeout: never
+
+keyboard:
+  remap_keys:
+  ignore_numlock: false
+  raw_keyboard: false
+
+pointer:
+  enabled: true
+
+# Clipboard (bidirectional)
+data_loss_prevention:
+  clipboard:
+    delay: 0
+    server_to_client:
+      enabled: true
+      size: unlimited
+      primary_clipboard_enabled: true
+    client_to_server:
+      enabled: true
+      size: unlimited
+  keyboard:
+    enabled: false
+  logging:
+    level: off
+
+logging:
+  log_writer_name: all
+  log_dest: logfile
+  level: 30   # Warnings only (reduce logging overhead)
