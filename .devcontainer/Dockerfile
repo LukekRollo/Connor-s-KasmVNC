@@ -35,3 +35,5 @@ COPY kasmvnc.yaml /etc/kasmvnc/kasmvnc.yaml
 COPY start-vnc.sh /opt/start-vnc.sh
 RUN chmod +x /opt/start-vnc.sh && \
     chmod 644 /etc/kasmvnc/kasmvnc.yaml
+    COPY auto-start.sh /opt/auto-start.sh
+RUN chmod +x /opt/auto-start.sh
