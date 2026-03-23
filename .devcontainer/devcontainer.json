@@ -11,7 +11,7 @@
       "onAutoForward": "openBrowser"
     }
   },
-  "postStartCommand": "nohup bash /opt/start-vnc.sh > /tmp/vnc-startup.log 2>&1 &",
+  "postAttachCommand": "if ! ss -tlnp | grep -q 6901; then bash /opt/start-vnc.sh > /tmp/vnc-startup.log 2>&1 & fi",
   "remoteUser": "vscode",
   "hostRequirements": {
     "cpus": 4,
