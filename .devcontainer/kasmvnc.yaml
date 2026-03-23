@@ -1,0 +1,22 @@
+desktop:
+  resolution:
+    width: 2560
+    height: 1440
+  allow_resize: true
+
+encoding:
+  max_frame_rate: 60
+  rect_encoding_mode:
+    min_quality: 7
+    max_quality: 9
+    rectangle_compress_threads: 6
+  video_encoding_mode:
+    enter_video_encoding_mode:
+      time_threshold: 2
+      area_fraction_threshold: 0.3
+  compare_framebuffer: auto
+  zrle_zlib_level: 1
+  treat_lossless: 8
+
+logging:
+  level: 30

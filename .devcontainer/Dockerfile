@@ -1,30 +1,22 @@
-FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntujammy
 
-# Prevent interactive prompts
-ENV DEBIAN_FRONTEND=noninteractive
+ENV TITLE="Chrome Desktop"
+ENV CUSTOM_PORT=6901
+ENV CUSTOM_USER=abc
+ENV PASSWORD=abc
 
-# Install KasmVNC (latest stable)
+# Minimal window manager + Google Chrome
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget ca-certificates \
-    # Desktop environment (ultra lightweight)
-    openbox obconf xterm \
-    # Audio stack
-    pulseaudio ffmpeg \
-    # Useful apps
-    firefox-esr \
-    dbus-x11 \
-    && wget https://github.com/kasmtech/KasmVNC/releases/download/v1.4.0/kasmvncserver_bookworm_1.4.0_amd64.deb \
-       -O /tmp/kasmvnc.deb \
-    || wget https://github.com/kasmtech/KasmVNC/releases/download/v1.4.0/kasmvncserver_jammy_1.4.0_amd64.deb \
-       -O /tmp/kasmvnc.deb \
-    && apt-get install -y /tmp/kasmvnc.deb \
-    && rm /tmp/kasmvnc.deb \
-    && adduser vscode ssl-cert \
+    openbox xterm \
+    wget gnupg \
+    && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy optimized config
-COPY config/kasmvnc.yaml /etc/kasmvnc/kasmvnc.yaml
-COPY scripts/start-desktop.sh /home/vscode/scripts/start-desktop.sh
-RUN chmod +x /home/vscode/scripts/start-desktop.sh
+# Copy config
+COPY kasmvnc.yaml /etc/kasmvnc/kasmvnc.yaml
+COPY autostart /root/defaults/autostart
 
-USER vscode
+EXPOSE 6901

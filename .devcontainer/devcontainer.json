@@ -1,19 +1,20 @@
 {
-  "name": "KasmVNC Desktop",
+  "name": "Chrome Optimized KasmVNC",
   "build": {
     "dockerfile": "Dockerfile"
   },
   "forwardPorts": [6901],
   "portsAttributes": {
     "6901": {
-      "label": "KasmVNC Desktop",
+      "label": "Chrome Desktop",
       "onAutoForward": "openBrowser"
     }
   },
-  "postStartCommand": "bash /home/vscode/scripts/start-desktop.sh",
-  "remoteUser": "vscode",
+  "postCreateCommand": "echo '🚀 Chrome-optimized desktop ready'",
+  "remoteUser": "abc",
   "hostRequirements": {
-    "cpus": 4,
-    "memory": "8gb"
+    "cpus": 6,
+    "memory": "16gb",
+    "storage": "64gb"
   }
 }
