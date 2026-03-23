@@ -1,22 +1,30 @@
 desktop:
   resolution:
-    width: 2560
-    height: 1440
+    width: 1920
+    height: 1080
   allow_resize: true
+  pixel_depth: 24
+
+network:
+  protocol: http
+  interface: 0.0.0.0
+  websocket_port: 6901
+  ssl:
+    require_ssl: false
+    pem_certificate: /etc/ssl/certs/ssl-cert-snakeoil.pem
+    pem_key: /etc/ssl/private/ssl-cert-snakeoil.key
 
 encoding:
   max_frame_rate: 60
   rect_encoding_mode:
     min_quality: 7
     max_quality: 9
-    rectangle_compress_threads: 6
-  video_encoding_mode:
-    enter_video_encoding_mode:
-      time_threshold: 2
-      area_fraction_threshold: 0.3
+    rectangle_compress_threads: 4
   compare_framebuffer: auto
   zrle_zlib_level: 1
-  treat_lossless: 8
+
+runtime_configuration:
+  allow_client_to_override_kasm_server_settings: true
 
 logging:
   level: 30

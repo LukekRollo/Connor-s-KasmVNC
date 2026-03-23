@@ -1,7 +1,8 @@
 {
-  "name": "Chrome KasmVNC Desktop",
+  "name": "Chrome KasmVNC",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile",
+    "context": "."
   },
   "forwardPorts": [6901],
   "portsAttributes": {
@@ -10,11 +11,10 @@
       "onAutoForward": "openBrowser"
     }
   },
-  "postStartCommand": "bash /home/vscode/.devcontainer/start-vnc.sh",
+  "postStartCommand": "nohup bash /opt/start-vnc.sh > /tmp/vnc-startup.log 2>&1 &",
   "remoteUser": "vscode",
   "hostRequirements": {
     "cpus": 4,
-    "memory": "8gb",
-    "storage": "32gb"
+    "memory": "8gb"
   }
 }
